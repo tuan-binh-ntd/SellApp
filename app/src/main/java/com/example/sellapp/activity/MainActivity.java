@@ -3,14 +3,19 @@ package com.example.sellapp.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import androidx.appcompat.widget.Toolbar;
@@ -20,7 +25,9 @@ import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
 import com.example.sellapp.R;
+import com.example.sellapp.adapter.NewProductAdapter;
 import com.example.sellapp.adapter.ProductCategoryAdapter;
+import com.example.sellapp.model.NewProduct;
 import com.example.sellapp.model.ProductCategory;
 import com.example.sellapp.retrofit.RetrofitClient;
 import com.example.sellapp.retrofit.SellApi;
@@ -46,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     List<ProductCategory> productCategories;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     SellApi sellApi;
+    List<NewProduct> newProductList;
+    NewProductAdapter newProductAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,23 +66,67 @@ public class MainActivity extends AppCompatActivity {
         actionBar();
 
         if (isConnected(this)) {
-            Toast.makeText(getApplicationContext(), "ok", Toast.LENGTH_LONG).show();
             actionViewFlipper();
             getLoaiSanPham();
+            getNewProduct();
+            getEventClick();
         } else {
-            Toast.makeText(getApplicationContext(), "khong co internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "không có internet, vui lòng kết nối", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void getLoaiSanPham() {
-        compositeDisposable.add(sellApi.getLoaiSp()
+    private void getEventClick() {
+        listViewHome.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i) {
+                    case 0:
+                        Intent home = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(home);
+                        break;
+                    case 1:
+                        Intent phone = new Intent(getApplicationContext(), PhoneActivity.class);
+                        phone.putExtra("loai",1);
+                        startActivity(phone);
+                        break;
+                    case 2:
+                        Intent laptop = new Intent(getApplicationContext(), LaptopActivity.class);
+                        startActivity(laptop);
+                }
+            }
+        });
+    }
+
+    private void getNewProduct() {
+        boolean add = compositeDisposable.add(sellApi.getSpMoi()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(loaiSpModel -> {
-                    if (loaiSpModel.isSuccess()) {
-                        Toast.makeText(getApplicationContext(), loaiSpModel.getResult().get(0).getProductName(), Toast.LENGTH_LONG).show();
-                    }
-                }));
+                .subscribe(newProductModel -> {
+                            if (newProductModel.isSuccess()) {
+                                newProductList = newProductModel.getResult();
+                                //init adapter
+                                newProductAdapter = new NewProductAdapter(getApplicationContext(), newProductList);
+                                recyclerViewHome.setAdapter(newProductAdapter);
+                            }
+                        }, throwable -> {
+                            Toast.makeText(getApplicationContext(), "Không kết nối được với server" + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                ));
+    }
+
+    private void getLoaiSanPham() {
+        boolean add = compositeDisposable.add(sellApi.getLoaiSp()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(productCategoryModel -> {
+                            if (productCategoryModel.isSuccess()) {
+                                productCategories = productCategoryModel.getResult();
+                                //init adapter
+                                productCategoryAdapter = new ProductCategoryAdapter(productCategories, getApplicationContext());
+                                listViewHome.setAdapter(productCategoryAdapter);
+                            }
+                        }, throwable -> Log.e("asd","Throwable " + throwable.getMessage())
+                ));
     }
 
     private void actionViewFlipper() {
@@ -108,14 +161,16 @@ public class MainActivity extends AppCompatActivity {
         toolbar=findViewById(R.id.toolbarhome);
         viewFlipper=findViewById(R.id.viewflipperhome);
         recyclerViewHome=findViewById(R.id.recyclerview);
+        RecyclerView.LayoutManager layoutManager  = new GridLayoutManager(this, 2);
+        recyclerViewHome.setLayoutManager(layoutManager);
+        recyclerViewHome.setHasFixedSize(true);
         navigationView=findViewById(R.id.navigationview);
         listViewHome=findViewById(R.id.listviewhome);
         drawerLayoutHome=findViewById(R.id.drawerlayouthome);
         //init list
         productCategories = new ArrayList<>();
-        //init adapter
-        productCategoryAdapter = new ProductCategoryAdapter(productCategories, getApplicationContext());
-        listViewHome.setAdapter(productCategoryAdapter);
+        newProductList = new ArrayList<>();
+
     }
 
     private boolean isConnected(Context context) {
@@ -123,5 +178,12 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         return (wifi != null && wifi.isConnected()) || (mobile != null && mobile.isConnected());
+    }
+
+    @Override
+    protected void onDestroy() {
+        compositeDisposable.clear();
+        super.onDestroy();
+
     }
 }

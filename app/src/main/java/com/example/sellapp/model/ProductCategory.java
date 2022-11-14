@@ -2,8 +2,8 @@ package com.example.sellapp.model;
 
 public class ProductCategory {
     int id;
-    String productName;
-    String productImage;
+    String tensanpham;
+    String hinhanh;
 
     public int getId() {
         return id;
@@ -13,19 +13,19 @@ public class ProductCategory {
         this.id = id;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getTensanpham() {
+        return tensanpham;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setTensanpham(String tensanpham) {
+        this.tensanpham = tensanpham;
     }
 
-    public String getProductImage() {
-        return productImage;
+    public String getHinhanh() {
+        return hinhanh;
     }
 
-    public void setProductImage(String productImage) {
-        this.productImage = productImage;
+    public void setHinhanh(String hinhanh) {
+        this.hinhanh = hinhanh;
     }
 }
