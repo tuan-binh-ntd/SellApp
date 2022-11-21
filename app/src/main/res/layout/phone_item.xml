@@ -5,7 +5,7 @@
     app:cardCornerRadius="4dp"
     android:layout_margin="5dp"
     android:layout_width="match_parent"
-    android:layout_height="200dp">
+    android:layout_height="150dp">
     <LinearLayout
         android:layout_margin="5dp"
         android:weightSum="10"
@@ -32,14 +32,6 @@
             android:text="Tên sản phẩm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/item_phone_id"
-                android:gravity="center"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/item_phone_price"

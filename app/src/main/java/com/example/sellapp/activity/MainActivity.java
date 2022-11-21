@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import androidx.appcompat.widget.Toolbar;
@@ -33,6 +34,7 @@ import com.example.sellapp.retrofit.RetrofitClient;
 import com.example.sellapp.retrofit.SellApi;
 import com.example.sellapp.utils.Utils;
 import com.google.android.material.navigation.NavigationView;
+import com.nex3z.notificationbadge.NotificationBadge;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
     SellApi sellApi;
     List<NewProduct> newProductList;
     NewProductAdapter newProductAdapter;
+    NotificationBadge badge;
+    FrameLayout frameLayout;
+    ImageView search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,8 +95,14 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(phone);
                         break;
                     case 2:
-                        Intent laptop = new Intent(getApplicationContext(), LaptopActivity.class);
+                        Intent laptop = new Intent(getApplicationContext(), PhoneActivity.class);
+                        laptop.putExtra("loai",2);
                         startActivity(laptop);
+                        break;
+                    case 5:
+                        Intent order = new Intent(getApplicationContext(), OrderActivity.class);
+                        startActivity(order);
+                        break;
                 }
             }
         });
@@ -158,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void map() {
+        search = findViewById(R.id.search_img);
         toolbar=findViewById(R.id.toolbarhome);
         viewFlipper=findViewById(R.id.viewflipperhome);
         recyclerViewHome=findViewById(R.id.recyclerview);
@@ -167,10 +179,45 @@ public class MainActivity extends AppCompatActivity {
         navigationView=findViewById(R.id.navigationview);
         listViewHome=findViewById(R.id.listviewhome);
         drawerLayoutHome=findViewById(R.id.drawerlayouthome);
+        badge = findViewById(R.id.menu_sl);
+        frameLayout = findViewById(R.id.frameCart);
         //init list
         productCategories = new ArrayList<>();
         newProductList = new ArrayList<>();
+        if(Utils.cartList == null) {
+            Utils.cartList = new ArrayList<>();
+        } else {
+            int totalItem = 0;
+            for(int i = 0; i < Utils.cartList.size(); i++) {
+                totalItem = totalItem + Utils.cartList.get(i).getQuantity();
+            }
+            badge.setText(String.valueOf(totalItem));
+        }
+        frameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
+                startActivity(intent);
+            }
+        });
 
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int totalItem = 0;
+        for(int i = 0; i < Utils.cartList.size(); i++) {
+            totalItem = totalItem + Utils.cartList.get(i).getQuantity();
+        }
+        badge.setText(String.valueOf(totalItem));
     }
 
     private boolean isConnected(Context context) {

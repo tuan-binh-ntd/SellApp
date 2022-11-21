@@ -1,6 +1,8 @@
 package com.example.sellapp.model;
 
-public class NewProduct {
+import java.io.Serializable;
+
+public class NewProduct implements Serializable {
     int id;
     String tensp;
     String hinhanh;

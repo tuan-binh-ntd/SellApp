@@ -50,11 +50,10 @@ public class PhoneAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (holder instanceof MyViewHolder) {
             MyViewHolder myViewHolder = (MyViewHolder) holder;
             NewProduct newProduct = newProductList.get(position);
-            myViewHolder.nameTxt.setText(newProduct.getTensp());
+            myViewHolder.nameTxt.setText(newProduct.getTensp().trim());
             DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
             myViewHolder.priceTxt.setText("Giá: " + decimalFormat.format(Double.parseDouble(newProduct.getGiasp())) + "Đ");
             myViewHolder.descTxt.setText(newProduct.getMota());
-            myViewHolder.id.setText(newProduct.getId() + "");
             Glide.with(context).load(newProduct.getHinhanh()).into(myViewHolder.img);
             myViewHolder.setItemClickListener(new ItemClickListener() {
                 @Override
@@ -62,6 +61,7 @@ public class PhoneAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     if(!isLongClick) {
                         // click
                         Intent intent = new Intent(context, DetailActivity.class);
+                        intent.putExtra("detail", newProduct);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
@@ -98,7 +98,6 @@ public class PhoneAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTxt = itemView.findViewById(R.id.item_phone_name);
-            id = itemView.findViewById(R.id.item_phone_id);
             priceTxt = itemView.findViewById(R.id.item_phone_price);
             descTxt = itemView.findViewById(R.id.item_phone_desc);
             img = itemView.findViewById(R.id.item_phone_img);

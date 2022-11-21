@@ -1,16 +1,16 @@
 package com.example.sellapp.model;
 
 public class ProductCategory {
-    int id;
+    int Id;
     String tensanpham;
     String hinhanh;
 
     public int getId() {
-        return id;
+        return Id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.Id = id;
     }
 
     public String getTensanpham() {
