@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            login(Paper.book().read("email"), Paper.book().read("password"));
+                            //login(Paper.book().read("email"), Paper.book().read("password"));
                         }
                     }, 1000);
                 }
@@ -114,6 +114,8 @@ public class LoginActivity extends AppCompatActivity {
                                 isLogin = true;
                                 Paper.book().write("isLogin", passwordInput);
                                 Utils.user = userModel.getResult().get(0);
+                                // luu lai thong tin nguoi dung
+                                Paper.book().write("user", userModel.getResult().get(0));
                                 Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);

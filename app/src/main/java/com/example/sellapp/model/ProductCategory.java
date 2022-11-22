@@ -5,6 +5,11 @@ public class ProductCategory {
     String tensanpham;
     String hinhanh;
 
+    public ProductCategory(String tensanpham, String hinhanh) {
+        this.tensanpham = tensanpham;
+        this.hinhanh = hinhanh;
+    }
+
     public int getId() {
         return Id;
     }

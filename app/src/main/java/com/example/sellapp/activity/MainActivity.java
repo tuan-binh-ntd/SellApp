@@ -30,6 +30,7 @@ import com.example.sellapp.adapter.NewProductAdapter;
 import com.example.sellapp.adapter.ProductCategoryAdapter;
 import com.example.sellapp.model.NewProduct;
 import com.example.sellapp.model.ProductCategory;
+import com.example.sellapp.model.User;
 import com.example.sellapp.retrofit.RetrofitClient;
 import com.example.sellapp.retrofit.SellApi;
 import com.example.sellapp.utils.Utils;
@@ -40,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import io.paperdb.Paper;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -66,7 +68,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sellApi = RetrofitClient.getInstance(Utils.BASE_URL).create(SellApi.class);
+        Paper.init(this);
+        if(Paper.book().read("user") != null) {
+            User user = Paper.book().read("user");
+            Utils.user = user;
+        } else {
 
+        }
         map();
         actionBar();
 
@@ -103,6 +111,12 @@ public class MainActivity extends AppCompatActivity {
                         Intent order = new Intent(getApplicationContext(), OrderActivity.class);
                         startActivity(order);
                         break;
+                    case 6:
+                        // xoa key user
+                        Paper.book().delete("user");
+                        Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(login);
+                        break;
                 }
             }
         });
@@ -132,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(productCategoryModel -> {
                             if (productCategoryModel.isSuccess()) {
                                 productCategories = productCategoryModel.getResult();
+                                productCategories.add(new ProductCategory("Đăng xuất", ""));
                                 //init adapter
                                 productCategoryAdapter = new ProductCategoryAdapter(productCategories, getApplicationContext());
                                 listViewHome.setAdapter(productCategoryAdapter);
