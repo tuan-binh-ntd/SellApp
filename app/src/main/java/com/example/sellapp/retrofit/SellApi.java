@@ -45,6 +45,13 @@ public interface SellApi {
             @Field("password") String password
     );
 
+    @POST("reset.php")
+    @FormUrlEncoded
+    Observable<UserModel> reset(
+            @Field("email") String email,
+            @Field("password") String password
+    );
+
     @POST("donhang.php")
     @FormUrlEncoded
     Observable<UserModel> createOrder(

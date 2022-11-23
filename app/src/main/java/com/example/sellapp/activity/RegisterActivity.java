@@ -103,9 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn = findViewById(R.id.register_btn);
         phone = findViewById(R.id.phone_input_register);
         username = findViewById(R.id.username_input_register);
-
         sellApi = RetrofitClient.getInstance(Utils.BASE_URL).create(SellApi.class);
-
     }
 
     @Override
