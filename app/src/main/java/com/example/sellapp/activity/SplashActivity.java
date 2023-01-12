@@ -19,16 +19,19 @@ public class SplashActivity extends AppCompatActivity {
         Thread thread = new Thread() {
           public void run() {
               try {
+                  // intro 1.5 sec
                   sleep(1500);
               } catch (InterruptedException e) {
                   e.printStackTrace();
               } finally {
                   if(Paper.book().read("user") == null) {
+                      // nếu không có thông tin người dùng đang nhập gần nhất sẽ vào màn hình đăng nhập
                       Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                       startActivity(intent);
                       finish();
                   } else {
-                      Intent intent = new Intent(getApplicationContext(), MainActivity  .class);
+                      // nhảy vào màn hình chính khi có thông tin của người dùng đăng nhập gần nhất
+                      Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                       startActivity(intent);
                       finish();
                   }

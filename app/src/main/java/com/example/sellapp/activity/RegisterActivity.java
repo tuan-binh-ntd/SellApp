@@ -64,7 +64,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         } else if(TextUtils.isEmpty(phoneInput)) {
             Toast.makeText(getApplicationContext(), "Bạn chưa nhập số điện thoại", Toast.LENGTH_LONG).show();
-
         } else {
             if(passwordInput.equals(confirmPasswordInput)) {
                 // post data
@@ -74,6 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
                         .subscribe(
                                 userModel -> {
                                     if(userModel.isSuccess()) {
+                                        // đăng ký thành công thì lưu vào user
                                         Utils.user.setEmail(emailInput);
                                         Utils.user.setPassword(passwordInput);
                                         Toast.makeText(getApplicationContext(), "Thành công", Toast.LENGTH_LONG).show();
@@ -86,7 +86,6 @@ public class RegisterActivity extends AppCompatActivity {
                                 },
                                 throwable -> {
                                     Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_LONG).show();
-
                                 }
                         ));
             }

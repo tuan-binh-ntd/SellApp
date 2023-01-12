@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     AppCompatButton loginBtn;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     SellApi sellApi;
-    boolean isLogin = false;
+    //boolean isLogin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         registerTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // set sự kiện cho nút đăng ký
                 Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(intent);
             }
@@ -51,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // thiết lập sự kiện cho nút quên mật khẩu
                 Intent intent = new Intent(getApplicationContext(), ResetPasswordActivity.class);
                 startActivity(intent);
             }
@@ -80,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initView() {
         Paper.init(this);
+        // khởi tạo các
         registerTxt = findViewById(R.id.register_txt);
         email = findViewById(R.id.email_input_login);
         password = findViewById(R.id.password_input_login);
@@ -111,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                 .subscribe(
                         userModel -> {
                             if(userModel.isSuccess()) {
-                                isLogin = true;
+                                //isLogin = true;
                                 Paper.book().write("isLogin", passwordInput);
                                 Utils.user = userModel.getResult().get(0);
                                 // luu lai thong tin nguoi dung

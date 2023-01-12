@@ -27,6 +27,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> {
+    // xử lý dữ liệu và gán cho view
     Context context;
     List<Cart> cartList;
 

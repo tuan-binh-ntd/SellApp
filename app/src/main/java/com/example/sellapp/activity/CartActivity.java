@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sellapp.R;
 import com.example.sellapp.adapter.CartAdapter;
@@ -80,6 +81,7 @@ public class CartActivity extends AppCompatActivity {
         });
 
         recyclerView.setHasFixedSize(true);
+        // xác định layout quản lý các item
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         if(Utils.cartList.size() == 0) {
@@ -92,10 +94,14 @@ public class CartActivity extends AppCompatActivity {
         buyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
-                intent.putExtra("total", totalMoney);
-                Utils.cartList.clear();
-                startActivity(intent);
+                if (Utils.boughtList.size() == 0) {
+                    Toast.makeText(getApplicationContext(), "Bản chưa chọn sản phẩm cần mua", Toast.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
+                    intent.putExtra("total", totalMoney);
+                    Utils.cartList.clear();
+                    startActivity(intent);
+                }
             }
         });
     }

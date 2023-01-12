@@ -114,7 +114,7 @@ public class PhoneActivity extends AppCompatActivity {
                             phoneAdapter.notifyItemRangeInserted(position, quantity);
                         }
                     } else {
-                        Toast.makeText(getApplicationContext(), "Hết dữ liệu", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Không còn sản phẩm", Toast.LENGTH_LONG).show();
                         isLoading = true;
                     }
                 },

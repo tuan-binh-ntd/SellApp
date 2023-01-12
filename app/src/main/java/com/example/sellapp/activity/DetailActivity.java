@@ -11,6 +11,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
@@ -90,6 +92,7 @@ public class DetailActivity extends AppCompatActivity {
             totalItem = totalItem + Utils.cartList.get(i).getQuantity();
         }
         badge.setText(String.valueOf(totalItem));
+        Toast.makeText(getApplicationContext(), "Thêm vào giỏ hàng thành công", Toast.LENGTH_LONG).show();
     }
 
     private void initData() {

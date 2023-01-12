@@ -107,15 +107,16 @@ public class MainActivity extends AppCompatActivity {
                         laptop.putExtra("loai",2);
                         startActivity(laptop);
                         break;
-                    case 5:
+                    case 4:
                         Intent order = new Intent(getApplicationContext(), OrderActivity.class);
                         startActivity(order);
                         break;
-                    case 6:
+                    case 5:
                         // xoa key user
                         Paper.book().delete("user");
                         Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(login);
+                        finishAffinity();
                         break;
                 }
             }
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(productCategoryModel -> {
                             if (productCategoryModel.isSuccess()) {
                                 productCategories = productCategoryModel.getResult();
-                                productCategories.add(new ProductCategory("Đăng xuất", ""));
+                                //productCategories.add(new ProductCategory("Đăng xuất", "https://cdn-icons-png.flaticon.com/512/3580/3580154.png"));
                                 //init adapter
                                 productCategoryAdapter = new ProductCategoryAdapter(productCategories, getApplicationContext());
                                 listViewHome.setAdapter(productCategoryAdapter);
@@ -185,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void map() {
         search = findViewById(R.id.search_img);
-        toolbar=findViewById(R.id.toolbarhome);
+        toolbar= findViewById(R.id.toolbarhome);
         viewFlipper=findViewById(R.id.viewflipperhome);
         recyclerViewHome=findViewById(R.id.recyclerview);
         RecyclerView.LayoutManager layoutManager  = new GridLayoutManager(this, 2);

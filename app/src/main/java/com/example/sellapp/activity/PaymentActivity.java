@@ -86,6 +86,7 @@ public class PaymentActivity extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), "Thành công", Toast.LENGTH_LONG).show();
                                         Utils.boughtList.clear();
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                        startActivity(intent);
                                         finish();
                                     },
                                     throwable -> {
