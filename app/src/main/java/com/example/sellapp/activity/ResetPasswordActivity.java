@@ -64,8 +64,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                                             }
                                         },
                                         throwable -> {
-                                            Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_LONG).show();
-
+                                            Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra kết nối mạng", Toast.LENGTH_LONG).show();
                                         }
                                 ));
                     } else {

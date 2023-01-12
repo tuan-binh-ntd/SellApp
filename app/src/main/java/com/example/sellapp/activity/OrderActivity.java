@@ -47,7 +47,7 @@ public class OrderActivity extends AppCompatActivity {
                             recyclerView.setAdapter(adapter);
                         },
                         throwable -> {
-
+                            Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra kết nối mạng", Toast.LENGTH_LONG).show();
                         }
                 ));
     }

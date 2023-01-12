@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                                 recyclerViewHome.setAdapter(newProductAdapter);
                             }
                         }, throwable -> {
-                            Toast.makeText(getApplicationContext(), "Không kết nối được với server" + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra kết nối mạng", Toast.LENGTH_LONG).show();
                         }
                 ));
     }
@@ -152,7 +152,9 @@ public class MainActivity extends AppCompatActivity {
                                 productCategoryAdapter = new ProductCategoryAdapter(productCategories, getApplicationContext());
                                 listViewHome.setAdapter(productCategoryAdapter);
                             }
-                        }, throwable -> Log.e("asd","Throwable " + throwable.getMessage())
+                        }, throwable -> {
+                            Toast.makeText(getApplicationContext(), "Vui lòng kiểm tra kết nối mạng", Toast.LENGTH_LONG).show();
+                        }
                 ));
     }
 
